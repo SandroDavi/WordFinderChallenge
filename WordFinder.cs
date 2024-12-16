@@ -107,6 +107,8 @@ public class WordFinder
 
     public IEnumerable<string> Find(IEnumerable<string> wordstream)
     {
+        ValidateFind(wordstream);
+
         var sw = Stopwatch.StartNew();
 
         if (trie == null)
@@ -211,12 +213,15 @@ public class WordFinder
         bool ValidRange(int count) => count is >= 1 and <= 64;
     }
 
-    void ValidateFind()
+    void ValidateFind(IEnumerable<string> wordstream)
     {
-        if (ValidRange((int)ThreadingMode, 0, 2))
+        if (wordstream == null)
+            throw new ArgumentNullException("[WordFinder.Find]Required parameter was not provided: wordstream is null");
+
+        if (!ValidRange((int)ThreadingMode, 0, 2))
             throw new ArgumentOutOfRangeException("[WordFinder.Find]ThreadingMode must be between 0 and 2");
 
-        if (ValidRange(ThreadCount, 1, 10))
+        if (!ValidRange(ThreadCount, 1, 10))
             throw new ArgumentOutOfRangeException("[WordFinder.Find]ThreadCount must be between 1 and 10");
 
         bool ValidRange(int count, int min, int max) => count >= min && count <= max;
