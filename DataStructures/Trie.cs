@@ -1,4 +1,4 @@
-class Trie
+public class Trie
 {
     private readonly TrieNode root = new();
 
